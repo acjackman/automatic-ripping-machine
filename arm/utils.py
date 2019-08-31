@@ -40,6 +40,13 @@ def notify(title, body):
         except:  # noqa: E722
             logging.error("Failed sending PushOver notification.  Continueing processing...")
 
+    if cfg.get('SLACK_WEBHOOK', "") != "":
+        try:
+            from slackweb import Slack
+            slack = Slack(url=cfg['SLACK_WEBHOOK'])
+            slack.notify('*' + title + '*\n' + body)
+        except:  # noqa: E722
+            logging.error("Failed sending Slack notification.  Continueing processing...")
 
 def scan_emby():
     """Trigger a media scan on Emby"""
